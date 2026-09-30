@@ -1,0 +1,56 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    >
+
+    <title>{% block title %}Modem Manager{% endblock %}</title>
+
+    <link rel="icon" href="{% static 'favicon.ico' %}" sizes="16x16 32x32 48x48 64x64" type="image/x-icon">
+    <link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">
+    <script src="{% static 'theme.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'app.css' %}">
+    <script src="{% static 'app.js' %}" defer></script>
+  </head>
+
+  <body>
+    <header>
+      <a href="{% url 'modem:dashboard' %}" class="brand">
+        Modem Manager
+      </a>
+
+      <div class="header-actions">
+        <button type="button" class="secondary theme-toggle" data-theme-toggle
+                aria-label="Switch to dark mode" hidden>
+          <span data-theme-icon aria-hidden="true">☾</span>
+          <span data-theme-label>Dark mode</span>
+        </button>
+        {% if user.is_authenticated %}
+          <form method="post" action="{% url 'app_logout' %}">
+            {% csrf_token %}
+            <button class="secondary">Sign out of application</button>
+          </form>
+        {% endif %}
+      </div>
+    </header>
+
+    <main>
+      {% for message in messages %}
+        <p class="message {{ message.tags }}" role="status">
+          {{ message }}
+        </p>
+      {% endfor %}
+
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+      Local network management · Authorized operators only
+    </footer>
+  </body>
+</html>

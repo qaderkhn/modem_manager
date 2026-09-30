@@ -1,0 +1,285 @@
+/* Shared palette for all application pages. Django admin owns its own theme. */
+:root {
+  color-scheme: light;
+  --bg-page: #f3f6f4;
+  --bg-surface: #ffffff;
+  --text-primary: #17312c;
+  --text-secondary: #53665f;
+  --border-color: #dae5df;
+  --accent-color: #26765c;
+  --action-color: #216349;
+  --action-text: #ffffff;
+  --action-hover: #184b37;
+  --surface-hover: #e9f3ee;
+  --input-border: #82998e;
+  --focus-color: #24779e;
+  --error-color: #912b2b;
+  --badge-bg: #e9f3ee;
+  --badge-border: #bad8c9;
+  --card-shadow: #17312c06;
+  font-family: system-ui, sans-serif;
+  color: var(--text-primary);
+  background: var(--bg-page);
+  line-height: 1.6;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg-page: #101c18;
+  --bg-surface: #1b2b24;
+  --text-primary: #e5f1eb;
+  --text-secondary: #b1c5bb;
+  --border-color: #40584c;
+  --accent-color: #8ed5b3;
+  --action-color: #8ed5b3;
+  --action-text: #10281d;
+  --action-hover: #b0e6cc;
+  --surface-hover: #293f33;
+  --input-border: #789789;
+  --focus-color: #80c9ed;
+  --error-color: #ffabab;
+  --badge-bg: #293f33;
+  --badge-border: #5d886f;
+  --card-shadow: #00000026;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+header {
+  padding: 1.2rem 5%;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+[hidden] {
+  display: none;
+}
+
+.brand {
+  font-weight: 750;
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+main {
+  max-width: 920px;
+  margin: 4rem auto;
+  padding: 0 1.2rem;
+}
+
+h1 {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 1.2rem;
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+.muted,
+footer {
+  color: var(--text-secondary);
+}
+
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 12px 35px var(--card-shadow);
+}
+
+.narrow {
+  max-width: 500px;
+  margin: 2rem auto;
+}
+
+.status-row,
+.actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.actions {
+  justify-content: flex-start;
+  margin-top: 1.6rem;
+}
+
+.badge {
+  background: var(--badge-bg);
+  border: 1px solid var(--badge-border);
+  border-radius: 2rem;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+}
+
+button,
+.button {
+  font: inherit;
+  font-weight: 650;
+  display: inline-block;
+  border: 1px solid var(--action-color);
+  background: var(--action-color);
+  color: var(--action-text);
+  padding: 0.65rem 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.secondary {
+  background: var(--bg-surface);
+  color: var(--action-color);
+}
+
+label {
+  display: block;
+  font-weight: 650;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font: inherit;
+  padding: 0.65rem;
+  border: 1px solid var(--input-border);
+  border-radius: 7px;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--focus-color);
+  outline-offset: 3px;
+}
+
+.message {
+  padding: 1rem;
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  background: var(--bg-surface);
+}
+
+.error,
+.errorlist {
+  color: var(--error-color);
+}
+
+.text-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: var(--action-color);
+}
+
+dt {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+dd {
+  margin: 0 0 1rem;
+}
+
+footer {
+  text-align: center;
+  font-size: 0.8rem;
+  padding: 2rem;
+}
+
+@media (max-width: 540px) {
+  header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  main {
+    margin: 2rem auto;
+  }
+
+  .card {
+    padding: 1.3rem;
+  }
+}
+
+/* Native controls, links, and interaction states share the same palette. */
+a {
+  color: var(--action-color);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button:not(:disabled):hover,
+.button:hover {
+  background: var(--action-hover);
+  text-decoration: none;
+}
+
+.secondary:not(:disabled):hover {
+  background: var(--surface-hover);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-secondary);
+  opacity: 1;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  width: auto;
+  accent-color: var(--action-color);
+}
+
+input[aria-invalid="true"],
+textarea[aria-invalid="true"],
+select[aria-invalid="true"] {
+  border-color: var(--error-color);
+}
+
+input:autofill {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}

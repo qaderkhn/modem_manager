@@ -1,0 +1,13 @@
+# Use with: docker compose -f compose.yaml -f compose.prod.yaml ...
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: modem_manager_nginx
+    restart: unless-stopped
+    ports:
+      - "${PROXY_BIND_IP:-0.0.0.0}:${PROXY_PORT:-8080}:80"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      app:
+        condition: service_healthy

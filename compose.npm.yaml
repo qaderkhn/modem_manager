@@ -1,0 +1,13 @@
+# NPM must already be attached to this external network.
+# Use with: docker compose -f compose.yaml -f compose.npm.yaml ...
+services:
+  app:
+    networks:
+      default:
+      npm:
+        aliases:
+          - modem-manager-app
+networks:
+  npm:
+    external: true
+    name: ${NPM_NETWORK:?Set the existing Docker network shared with Nginx Proxy Manager}

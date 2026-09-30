@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <section class="card narrow">
+    <p class="eyebrow">APPLICATION ACCESS</p>
+
+    <h1>Sign in</h1>
+
+    <p>
+      Use your Django account to access the management console.
+    </p>
+
+    <form method="post">
+      {% csrf_token %}
+
+      {{ form.as_p }}
+
+      {% if next %}
+        <input type="hidden" name="next" value="{{ next }}">
+      {% endif %}
+
+      <button>Sign in</button>
+    </form>
+
+    <p class="muted">
+      Modem authentication is a separate step.
+    </p>
+  </section>
+{% endblock %}

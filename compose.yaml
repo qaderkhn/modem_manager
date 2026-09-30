@@ -1,0 +1,38 @@
+services:
+  app:
+    build: .
+    container_name: modem_manager
+    user: "10001:10001"
+    restart: unless-stopped
+    init: true
+    env_file: .env
+    environment:
+      DJANGO_DEBUG: "false"
+      DJANGO_SQLITE_PATH: /data/db.sqlite3
+      MODEM_MONITOR_ENABLED: "true"
+      MODEM_USERNAME_FILE: /run/secrets/modem_username
+      MODEM_PASSWORD_FILE: /run/secrets/modem_password
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - data:/data
+    secrets:
+      - modem_username
+      - modem_password
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/', timeout=5)"]
+      start_period: 30s
+      interval: 30s
+      timeout: 10s
+      retries: 3
+secrets:
+  modem_username:
+    file: ${MODEM_USERNAME_SECRET_PATH:?Set protected host username file path}
+  modem_password:
+    file: ${MODEM_PASSWORD_SECRET_PATH:?Set protected host password file path}
+volumes:
+  data:

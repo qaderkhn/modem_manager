@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <p class="eyebrow">NETWORK CONSOLE</p>
+
+  <h1>Huawei N5368X</h1>
+
+  <p class="muted">HUAWEI 5G Outdoor CPE · LTE monitoring and reconnect</p>
+
+  <section class="card">
+    <div class="status-row">
+      <div>
+        <h2>Modem session</h2>
+        <p>{{ modem_url }}</p>
+      </div>
+
+      <strong class="badge">
+        {% if authenticated %}
+          Authenticated
+        {% else %}
+          Not authenticated
+        {% endif %}
+      </strong>
+    </div>
+
+    <dl>
+      <dt>Last successful modem login</dt>
+      <dd>
+        {{ connection.last_login_at|date:'Y-m-d H:i:s T'|default:'No login recorded' }}
+      </dd>
+
+      <dt>Last successful reconnect request</dt>
+      <dd>
+        {{ connection.last_reconnect_at|date:'Y-m-d H:i:s T'|default:'No reconnect recorded' }}
+      </dd>
+    </dl>
+
+    <p class="muted">
+      {% if authenticated %}
+        Protected modem session verified. Reconnecting may briefly interrupt network access.
+      {% else %}
+        Log in to the modem to enable reconnect. An expired or unavailable
+        session requires a new login.
+      {% endif %}
+    </p>
+
+    <div class="actions">
+      <form
+        method="post"
+        action="{% url 'modem:reconnect' %}"
+        data-pending="Reconnecting…"
+      >
+        {% csrf_token %}
+        <button {% if not authenticated %}disabled{% endif %}>Reconnect Network</button>
+      </form>
+
+      {% if authenticated and not monitor.enabled %}
+        <form method="post" action="{% url 'modem:logout' %}">
+          {% csrf_token %}
+          <button class="secondary">Logout of modem</button>
+        </form>
+      {% else %}
+        <a class="button secondary" href="{% url 'modem:login' %}">
+          Login to modem
+        </a>
+      {% endif %}
+    </div>
+  </section>
+  {% if monitor.enabled %}
+    <section class="card">
+      <h2>LTE Monitor</h2>
+      <p>Status: {{ monitor.state }} — {{ monitor.health.health_reason }}</p>
+      {% if not monitor.outage_configured %}<p>Outage status not yet verified. Automatic recovery cannot trigger.</p>{% endif %}
+      <dl>
+        <dt>Last check</dt><dd>{{ monitor.last_check|default:'Never' }}</dd>
+        <dt>Service status / system mode</dt><dd>{{ monitor.health.service_status|default_if_none:'Unknown' }} / {{ monitor.health.sys_mode|default:'Unknown' }}</dd>
+        <dt>API reachable / authenticated at last check</dt><dd>{{ monitor.health.api_reachable|yesno:"Yes,No" }} / {{ monitor.health.authenticated|yesno:"Yes,No" }}</dd>
+        <dt>LTE level</dt><dd>{{ monitor.health.lte_level|default:'Unavailable' }}</dd>
+        <dt>RSSI / RSRP (dBm)</dt><dd>{{ monitor.health.lte_rssi|default_if_none:'Unavailable' }} / {{ monitor.health.lte_rsrp|default_if_none:'Unavailable' }}</dd>
+        <dt>RSRQ / SINR (dB)</dt><dd>{{ monitor.health.lte_rsrq|default_if_none:'Unavailable' }} / {{ monitor.health.lte_sinr|default_if_none:'Unavailable' }}</dd>
+        <dt>NR RSRP / RSRQ / SINR</dt><dd>{{ monitor.health.nr_rsrp|default_if_none:"Unavailable" }} / {{ monitor.health.nr_rsrq|default_if_none:"Unavailable" }} / {{ monitor.health.nr_sinr|default_if_none:"Unavailable" }}</dd>
+        <dt>Consecutive failures</dt><dd>{{ monitor.failures }}</dd>
+        <dt>Automatic recovery</dt><dd>{{ monitor.automatic|yesno:'Enabled,Disabled' }}</dd>
+        <dt>Recovery attempts</dt><dd>{{ monitor.attempts }} / {{ monitor.max_attempts }}</dd>
+        <dt>Last recovery</dt><dd>{{ monitor.last_recovery|default:'Never' }}</dd>
+      </dl>
+      <p>Monitoring owns the modem session. Browser logout does not stop monitoring or clear that session.</p>
+    </section>
+  {% endif %}
+{% endblock %}

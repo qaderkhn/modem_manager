@@ -1,0 +1,25 @@
+[project]
+name = "modem-manager"
+version = "0.1.0"
+license = "MIT"
+license-files = ["LICENSE"]
+description = "LTE monitoring and reconnect for the Huawei N5368X"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "Django>=5.2.14,<5.3",
+    "requests>=2.32.4,<3",
+    "python-dotenv>=1.1,<2",
+    "gunicorn>=23,<26",
+    "psycopg[binary]>=3.2,<4",
+    "cryptography>=50,<51",
+    "whitenoise>=6.12,<7",
+]
+
+[dependency-groups]
+dev = ["ruff>=0.12"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
