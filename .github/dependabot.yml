@@ -2,13 +2,27 @@ version: 2
 updates:
   - package-ecosystem: uv
     directory: /
+    # requirements.txt is generated from uv.lock (see the sync workflow), so
+    # Dependabot must only edit uv.lock and pyproject.toml.
+    exclude-paths:
+      - requirements.txt
     schedule:
       interval: monthly
+    groups:
+      python-dependencies:
+        patterns: ["*"]
   - package-ecosystem: docker
     directory: /
+    ignore:
+      # pyproject.toml pins requires-python to 3.12; move off it deliberately.
+      - dependency-name: python
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
     schedule:
       interval: monthly
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: monthly
+    groups:
+      github-actions:
+        patterns: ["*"]
